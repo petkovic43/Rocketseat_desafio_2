@@ -17,7 +17,7 @@ app.get("/repositories", (request, response) => {
 app.post("/repositories", (request, response) => {
   
   const {title, url, techs } = request.body;
-  const repo = { id:uuid(), title, url, techs, like:0}
+  const repo = { id:uuid(), title, url, techs, likes:0}
   repositories.push(repo);
 
   return response.json(repo);
@@ -25,15 +25,15 @@ app.post("/repositories", (request, response) => {
 
 app.put("/repositories/:id", (request, response) => {
   const { id } = request.params;
-  const {title, url, techs, like } = request.body;
+  const {title, url, techs, likes } = request.body;
 
   const repoIndex = repositories.findIndex(repo => repo.id === id);
 
   if(repoIndex < 0)  {
     return response.status(400).json({ error: "Repository not found" })
   }
-  const repo = { id, title, url, techs, like}
-  if(repo.like != repositories[repoIndex].like){
+  const repo = { id, title, url, techs, likes}
+  if(repo.likes != repositories[repoIndex].likes){
     return response.status(400).json({ error: "Like cannot be changed" })
   }
   repositories[repoIndex] = repo;
@@ -57,7 +57,7 @@ app.delete("/repositories/:id", (request, response) => {
 
 app.post("/repositories/:id/like", (request, response) => {
   const { id } = request.params;
-  const {title, url, tech, like } = request.body;
+  const {title, url, tech, likes } = request.body;
 
   const repoIndex = repositories.findIndex(repo => repo.id === id);
 
@@ -65,7 +65,7 @@ app.post("/repositories/:id/like", (request, response) => {
     return response.status(400).json({ error: "Repository not found" })
   }
   
-  repositories[repoIndex].like++;
+  repositories[repoIndex].likes++;
   repo = repositories[repoIndex];
   
   return response.json(repo);
