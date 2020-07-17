@@ -32,13 +32,20 @@ app.put("/repositories/:id", (request, response) => {
   if(repoIndex < 0)  {
     return response.status(400).json({ error: "Repository not found" })
   }
-  const repo = { id, title, url, techs, likes}
-  if(repo.likes != repositories[repoIndex].likes){
-    return response.status(400).json({ error: "Like cannot be changed" })
-  }
-  repositories[repoIndex] = repo;
+  repoUpdate = repositories[repoIndex];
 
-  return response.json(repo);
+  repoUpdate.id = id;
+  repoUpdate.title = title;
+  repoUpdate.url = url;
+  repoUpdate.techs = techs;
+  if(likes){
+      if(likes != repoUpdate.likes){
+        return response.status(400).json({ error: "Like cannot be changed" })
+    }
+  }
+  repositories[repoIndex] = repoUpdate;
+
+  return response.json(repoUpdate);
 });
 
 app.delete("/repositories/:id", (request, response) => {
