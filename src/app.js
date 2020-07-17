@@ -38,11 +38,7 @@ app.put("/repositories/:id", (request, response) => {
   repoUpdate.title = title;
   repoUpdate.url = url;
   repoUpdate.techs = techs;
-  if(likes){
-      if(likes != repoUpdate.likes){
-        return response.status(400).json({ error: "Like cannot be changed" })
-    }
-  }
+  
   repositories[repoIndex] = repoUpdate;
 
   return response.json(repoUpdate);
